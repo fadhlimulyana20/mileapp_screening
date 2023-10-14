@@ -3,6 +3,7 @@ package router
 import (
 	"encoding/json"
 	"net/http"
+
 	"github.com/mileapp_screening/internal/appctx"
 	"github.com/mileapp_screening/internal/config"
 	m "github.com/mileapp_screening/internal/middleware"
@@ -61,6 +62,7 @@ func (rtr *router) Route() http.Handler {
 
 	rtr.router.Mount("/hello", rtr.helloRouter())
 	rtr.router.Mount("/nosql", rtr.nosqlRouter())
+	rtr.router.Mount("/package", rtr.transactionRouter())
 	rtr.router.Mount("/admin/v1", rtr.AdminRouterV1())
 
 	return rtr.router

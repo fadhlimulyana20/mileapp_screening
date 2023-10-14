@@ -2,6 +2,7 @@ package router
 
 import (
 	"net/http"
+
 	"github.com/mileapp_screening/internal/handler"
 
 	"github.com/go-chi/chi/v5"
@@ -21,4 +22,13 @@ func (rtr *router) nosqlRouter() http.Handler {
 	nosql := chi.NewRouter()
 	nosql.Post("/", nosqlHandler.Insert)
 	return nosql
+}
+
+func (rtr *router) transactionRouter() http.Handler {
+	trxHandler := handler.NewTransactionHandler(rtr.cfg.Mongo)
+	trxrouter := chi.NewRouter()
+
+	trxrouter.Post("/", trxHandler.Insert)
+
+	return trxrouter
 }
