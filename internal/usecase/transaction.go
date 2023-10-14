@@ -20,6 +20,7 @@ type transactionUc struct {
 type TransactionUsecase interface {
 	Insert(param params.TransactionCreateParam) appctx.Response
 	GetOne(ID string) appctx.Response
+	Get() appctx.Response
 }
 
 func NewTransactionUsecase(mongo database.MongoDB) TransactionUsecase {
@@ -54,4 +55,16 @@ func (t *transactionUc) GetOne(ID string) appctx.Response {
 	}
 
 	return *appctx.NewResponse().WithData(trx)
+}
+
+func (t *transactionUc) Get() appctx.Response {
+	logrus.Info(fmt.Sprintf("[%s][Get] is executed", t.name))
+
+	txs, count, err := t.trxRepo.Get()
+	if err != nil {
+		logrus.Error(fmt.Sprintf("[%s][Get One] %s", t.name, err.Error()))
+		return *appctx.NewResponse().WithErrors(err.Error())
+	}
+
+	return *appctx.NewResponse().WithData(txs).WithMeta(1, 25, int64(count))
 }

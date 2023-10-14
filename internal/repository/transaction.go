@@ -20,6 +20,7 @@ type transactionRepo struct {
 type TransactionRepository interface {
 	Insert(entities.Transaction) (entities.Transaction, error)
 	GetOne(ID string) (entities.Transaction, error)
+	Get() ([]entities.Transaction, int, error)
 }
 
 func NewTransactionRepository(mongo database.MongoDB) TransactionRepository {
@@ -97,4 +98,40 @@ func (t *transactionRepo) GetOne(ID string) (entities.Transaction, error) {
 	defer t.mongo.Close(ctx, client)
 
 	return tx, nil
+}
+
+func (t *transactionRepo) Get() ([]entities.Transaction, int, error) {
+	logrus.Info(fmt.Sprintf("[%s][Get] is executed", t.name))
+
+	var txs []entities.Transaction
+
+	db, client, err := t.mongo.Database()
+	if err != nil {
+		logrus.Error(fmt.Sprintf("[%s][Get] %s", t.name, err.Error()))
+		return txs, 0, err
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	cur, err := db.Collection("transaction").Find(ctx, bson.D{})
+	if err != nil {
+		logrus.Error(fmt.Sprintf("[%s][Get] %s", t.name, err.Error()))
+		return txs, 0, err
+	}
+
+	defer t.mongo.Close(ctx, client)
+
+	for cur.Next(ctx) {
+		var tx entities.Transaction
+		err := cur.Decode(&tx)
+		if err != nil {
+			logrus.Error(fmt.Sprintf("[%s][Get] %s", t.name, err.Error()))
+			return txs, 0, err
+		}
+
+		txs = append(txs, tx)
+	}
+
+	return txs, len(txs), nil
 }
