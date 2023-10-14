@@ -21,6 +21,7 @@ type TransactionRepository interface {
 	Insert(entities.Transaction) (entities.Transaction, error)
 	GetOne(ID string) (entities.Transaction, error)
 	Get() ([]entities.Transaction, int, error)
+	Delete(ID string) (entities.Transaction, error)
 }
 
 func NewTransactionRepository(mongo database.MongoDB) TransactionRepository {
@@ -134,4 +135,34 @@ func (t *transactionRepo) Get() ([]entities.Transaction, int, error) {
 	}
 
 	return txs, len(txs), nil
+}
+
+func (t *transactionRepo) Delete(ID string) (entities.Transaction, error) {
+	logrus.Info(fmt.Sprintf("[%s][Delete] is executed", t.name))
+	var tx entities.Transaction
+
+	objID, err := primitive.ObjectIDFromHex(ID)
+	if err != nil {
+		logrus.Error(fmt.Sprintf("[%s][Delete] %s", t.name, err.Error()))
+		return tx, err
+	}
+
+	db, client, err := t.mongo.Database()
+	if err != nil {
+		logrus.Error(fmt.Sprintf("[%s][Delete] %s", t.name, err.Error()))
+		return tx, err
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	filter := bson.D{{"_id", objID}}
+	_, err = db.Collection("transaction").DeleteOne(ctx, filter)
+	if err != nil {
+		logrus.Error(fmt.Sprintf("[%s][Get One] %s", t.name, err.Error()))
+		return tx, err
+	}
+	defer t.mongo.Close(ctx, client)
+
+	return tx, nil
 }

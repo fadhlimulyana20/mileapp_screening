@@ -21,6 +21,7 @@ type TransactionUsecase interface {
 	Insert(param params.TransactionCreateParam) appctx.Response
 	GetOne(ID string) appctx.Response
 	Get() appctx.Response
+	Delete(ID string) appctx.Response
 }
 
 func NewTransactionUsecase(mongo database.MongoDB) TransactionUsecase {
@@ -67,4 +68,16 @@ func (t *transactionUc) Get() appctx.Response {
 	}
 
 	return *appctx.NewResponse().WithData(txs).WithMeta(1, 25, int64(count))
+}
+
+func (t *transactionUc) Delete(ID string) appctx.Response {
+	logrus.Info(fmt.Sprintf("[%s][Delete] is executed", t.name))
+
+	_, err := t.trxRepo.Delete(ID)
+	if err != nil {
+		logrus.Error(fmt.Sprintf("[%s][Delete] %s", t.name, err.Error()))
+		return *appctx.NewResponse().WithErrors(err.Error())
+	}
+
+	return *appctx.NewResponse().WithMessage("Package has been deleted")
 }

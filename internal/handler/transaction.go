@@ -26,6 +26,7 @@ type TransactionHandler interface {
 	Insert(w http.ResponseWriter, r *http.Request)
 	GetOne(w http.ResponseWriter, r *http.Request)
 	Get(w http.ResponseWriter, r *http.Request)
+	Delete(w http.ResponseWriter, r *http.Request)
 }
 
 func NewTransactionHandler(mongo database.MongoDB) TransactionHandler {
@@ -77,5 +78,15 @@ func (t *transactionHandler) Get(w http.ResponseWriter, r *http.Request) {
 	startTime := time.Now()
 
 	resp := t.trxUsecase.Get()
+	t.handler.Response(w, resp, startTime, time.Now())
+}
+
+func (t *transactionHandler) Delete(w http.ResponseWriter, r *http.Request) {
+	logrus.Info(fmt.Sprintf("[%s][Delete] is executed", t.name))
+	startTime := time.Now()
+
+	id := chi.URLParam(r, "id")
+
+	resp := t.trxUsecase.Delete(id)
 	t.handler.Response(w, resp, startTime, time.Now())
 }
