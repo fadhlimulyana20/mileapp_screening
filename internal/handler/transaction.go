@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/go-chi/chi/v5"
 	"github.com/mileapp_screening/database"
 	"github.com/mileapp_screening/internal/appctx"
 	"github.com/mileapp_screening/internal/params"
@@ -23,6 +24,7 @@ type transactionHandler struct {
 
 type TransactionHandler interface {
 	Insert(w http.ResponseWriter, r *http.Request)
+	GetOne(w http.ResponseWriter, r *http.Request)
 }
 
 func NewTransactionHandler(mongo database.MongoDB) TransactionHandler {
@@ -56,5 +58,15 @@ func (t *transactionHandler) Insert(w http.ResponseWriter, r *http.Request) {
 	}
 
 	resp := t.trxUsecase.Insert(param)
+	t.handler.Response(w, resp, startTime, time.Now())
+}
+
+func (t *transactionHandler) GetOne(w http.ResponseWriter, r *http.Request) {
+	logrus.Info(fmt.Sprintf("[%s][Get One] is executed", t.name))
+	startTime := time.Now()
+
+	id := chi.URLParam(r, "id")
+
+	resp := t.trxUsecase.GetOne(id)
 	t.handler.Response(w, resp, startTime, time.Now())
 }

@@ -29,6 +29,7 @@ func (rtr *router) transactionRouter() http.Handler {
 	trxrouter := chi.NewRouter()
 
 	trxrouter.Post("/", trxHandler.Insert)
+	trxrouter.Get("/{id}", trxHandler.GetOne)
 
 	return trxrouter
 }

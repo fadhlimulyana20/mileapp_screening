@@ -19,6 +19,7 @@ type transactionUc struct {
 
 type TransactionUsecase interface {
 	Insert(param params.TransactionCreateParam) appctx.Response
+	GetOne(ID string) appctx.Response
 }
 
 func NewTransactionUsecase(mongo database.MongoDB) TransactionUsecase {
@@ -37,6 +38,18 @@ func (t *transactionUc) Insert(param params.TransactionCreateParam) appctx.Respo
 	trx, err := t.trxRepo.Insert(trx)
 	if err != nil {
 		logrus.Error(fmt.Sprintf("[%s][Insert] %s", t.name, err.Error()))
+		return *appctx.NewResponse().WithErrors(err.Error())
+	}
+
+	return *appctx.NewResponse().WithData(trx)
+}
+
+func (t *transactionUc) GetOne(ID string) appctx.Response {
+	logrus.Info(fmt.Sprintf("[%s][Get One] is executed", t.name))
+
+	trx, err := t.trxRepo.GetOne(ID)
+	if err != nil {
+		logrus.Error(fmt.Sprintf("[%s][Get One] %s", t.name, err.Error()))
 		return *appctx.NewResponse().WithErrors(err.Error())
 	}
 
