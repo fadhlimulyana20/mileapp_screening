@@ -12,7 +12,6 @@ type KoliDataCreateParam struct {
 	ConnoteID            string                 `json:"connote_id"`
 	KoliVolume           int                    `bson:"koli_volume" json:"koli_volume"`
 	KoliWeight           int                    `bson:"koli_weight" json:"koli_weight"`
-	KoliID               string                 `json:"koli_id"`
 	KoliCustomField      map[string]interface{} `json:"koli_custom_field"`
 	KoliCode             string                 `json:"koli_code"`
 }

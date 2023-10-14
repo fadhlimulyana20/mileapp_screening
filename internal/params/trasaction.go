@@ -32,6 +32,7 @@ type TransactionCreateParam struct {
 	TransactionCashAmount      *int                                  `json:"transaction_cash_amount" validate:"required"`
 	TransactionCashChange      *int                                  `json:"transaction_cash_change" validate:"required"`
 	CustomerAttribute          map[string]interface{}                `json:"customer_attribute"`
+	Connote                    ConnoteCreateParam                    `json:"connote"`
 	ConnoteID                  string                                `json:"connote_id"`
 	OriginData                 TransactionCustomerCreateParam        `json:"origin_data"`
 	DestinationData            TransactionCustomerCreateParam        `json:"destination_data"`

@@ -30,10 +30,23 @@ func NewTransactionRepository(mongo database.MongoDB) TransactionRepository {
 func (t *transactionRepo) Insert(tx entities.Transaction) (entities.Transaction, error) {
 	logrus.Info(fmt.Sprintf("[%s][Insert] is executed", t.name))
 
-	tx.TransactionID = primitive.NewObjectID()
+	transactionID := primitive.NewObjectID()
+	tx.TransactionID = transactionID
 	tx.TransactionOrder = 1
 	tx.CreatedAt = time.Now()
 	tx.UpdatedAt = time.Now()
+
+	connoteID := primitive.NewObjectID()
+	tx.Connote.ConnoteID = connoteID
+	tx.ConnoteID = connoteID
+	tx.Connote.TransactionID = transactionID
+
+	for i, _ := range tx.KoliData {
+		tx.KoliData[i].KoliID = primitive.NewObjectID()
+		tx.KoliData[i].CreatedAt = time.Now()
+		tx.KoliData[i].UpdatedAt = time.Now()
+		tx.KoliData[i].ConnoteID = connoteID
+	}
 
 	db, client, err := t.mongo.Database()
 	if err != nil {

@@ -35,7 +35,7 @@ type Transaction struct {
 	TransactionState           string              `bson:"transaction_state" json:"transaction_state"`
 	TransactionCode            string              `bson:"transaction_code" json:"transaction_code"`
 	TransactionOrder           int                 `bson:"transaction_order" json:"transaction_order"`
-	LocationID                 primitive.ObjectID  `bson:"location_id" json:"location_id"`
+	LocationID                 string              `bson:"location_id" json:"location_id"`
 	OrganizationID             int                 `bson:"organization_id" json:"organization_id"`
 	CreatedAt                  time.Time           `bson:"created_at" json:"created_at"`
 	UpdatedAt                  time.Time           `bson:"updated_at" json:"updated_at"`
@@ -43,6 +43,7 @@ type Transaction struct {
 	TransactionCashAmount      int                 `bson:"transaction_cash_amount"`
 	TransactionCashChange      int                 `bson:"transaction_cash_change"`
 	CustomerAttribute          primitive.M         `bson:"customer_attribute" json:"customer_attribute"`
+	Connote                    Connote             `bson:"connote" json:"connote"`
 	ConnoteID                  primitive.ObjectID  `bson:"connote_id" json:"connote_id"`
 	OriginData                 TransactionCustomer `bson:"origin_data" json:"origin_data"`
 	DestinationData            TransactionCustomer `bson:"destination_data" json:"destination_data"`
