@@ -27,6 +27,7 @@ type TransactionUsecase interface {
 	Get() appctx.Response
 	Delete(ID string) appctx.Response
 	Update(param params.TransactionUpdateParam) appctx.Response
+	Patch(param params.TransactionPatchParam) appctx.Response
 }
 
 func NewTransactionUsecase(mongo database.MongoDB) TransactionUsecase {
@@ -125,6 +126,26 @@ func (t *transactionUc) Update(param params.TransactionUpdateParam) appctx.Respo
 	trx, err = t.trxRepo.Update(trx)
 	if err != nil {
 		logrus.Error(fmt.Sprintf("[%s][Insert] %s", t.name, err.Error()))
+		return *appctx.NewResponse().WithErrors(err.Error())
+	}
+
+	return *appctx.NewResponse().WithData(trx)
+}
+
+func (t *transactionUc) Patch(param params.TransactionPatchParam) appctx.Response {
+	logrus.Info(fmt.Sprintf("[%s][Patch] is executed", t.name))
+
+	var trx entities.Transaction
+	trx, err := t.trxRepo.GetOne(param.TransactionID)
+	if err != nil {
+		logrus.Error(fmt.Sprintf("[%s][Patch] %s", t.name, err.Error()))
+		return *appctx.NewResponse().WithErrors(err.Error())
+	}
+	copier.CopyWithOption(&trx, &param, copier.Option{IgnoreEmpty: true})
+
+	trx, err = t.trxRepo.Update(trx)
+	if err != nil {
+		logrus.Error(fmt.Sprintf("[%s][Patch] %s", t.name, err.Error()))
 		return *appctx.NewResponse().WithErrors(err.Error())
 	}
 

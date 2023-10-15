@@ -6,6 +6,12 @@ type TransactionCurrentLocationCreateParam struct {
 	Type string `json:"type" validate:"required"`
 }
 
+type TransactionCurrentLocationPatchParam struct {
+	Name string `json:"name"`
+	Code string `json:"code"`
+	Type string `json:"type"`
+}
+
 type TransactionCustomerCreateParam struct {
 	CustomerName          string `json:"customer_name"`
 	CustomerAddress       string `json:"customer_address"`
@@ -63,4 +69,28 @@ type TransactionUpdateParam struct {
 	KoliData                   []KoliDataUpdateParam                 `json:"koli_data"`
 	CustomField                map[string]interface{}                `json:"custom_field"`
 	CurrentLocation            TransactionCurrentLocationCreateParam `json:"current_location" validate:"required"`
+}
+
+type TransactionPatchParam struct {
+	TransactionID              string                               `json:"transaction_id"`
+	CustomerName               string                               `json:"customer_name"`
+	CustomerCode               string                               `json:"customer_code"`
+	TransactionAmount          string                               `json:"transaction_amount"`
+	TransactionDiscount        string                               `json:"transaction_discount"`
+	TransactionAdditionalField map[string]interface{}               `json:"transaction_additional_field"`
+	TransactionPaymentType     string                               `json:"transaction_payment_type"`
+	TransactionState           string                               `json:"transaction_state"`
+	LocationID                 string                               `json:"location_id"`
+	OrganizationID             int                                  `json:"organization_id"`
+	TransactionPaymentTypeName string                               `json:"transaction_payment_type_name"`
+	TransactionCashAmount      *int                                 `json:"transaction_cash_amount"`
+	TransactionCashChange      *int                                 `json:"transaction_cash_change"`
+	CustomerAttribute          map[string]interface{}               `json:"customer_attribute"`
+	Connote                    ConnoteUpdateParam                   `json:"connote"`
+	ConnoteID                  string                               `json:"connote_id"`
+	OriginData                 TransactionCustomerCreateParam       `json:"origin_data"`
+	DestinationData            TransactionCustomerCreateParam       `json:"destination_data"`
+	KoliData                   []KoliDataUpdateParam                `json:"koli_data"`
+	CustomField                map[string]interface{}               `json:"custom_field"`
+	CurrentLocation            TransactionCurrentLocationPatchParam `json:"current_location"`
 }
