@@ -31,7 +31,7 @@ type Transaction struct {
 	TransactionAmount          string              `bson:"transaction_amount" json:"transaction_amount"`
 	TransactionDiscount        string              `bson:"transaction_discount" json:"transaction_discount"`
 	TransactionAdditionalField primitive.M         `bson:"transaction_additional_field" json:"transaction_additional_field"`
-	TransactionPaymentType     string              `bson:"transaction_payment_type"`
+	TransactionPaymentType     string              `bson:"transaction_payment_type" json:"transaction_payment_type"`
 	TransactionState           string              `bson:"transaction_state" json:"transaction_state"`
 	TransactionCode            string              `bson:"transaction_code" json:"transaction_code"`
 	TransactionOrder           int                 `bson:"transaction_order" json:"transaction_order"`
@@ -39,9 +39,9 @@ type Transaction struct {
 	OrganizationID             int                 `bson:"organization_id" json:"organization_id"`
 	CreatedAt                  time.Time           `bson:"created_at" json:"created_at"`
 	UpdatedAt                  time.Time           `bson:"updated_at" json:"updated_at"`
-	TransactionPaymentTypeName string              `bson:"transaction_payment_type_name"`
-	TransactionCashAmount      int                 `bson:"transaction_cash_amount"`
-	TransactionCashChange      int                 `bson:"transaction_cash_change"`
+	TransactionPaymentTypeName string              `bson:"transaction_payment_type_name" json:"transaction_payment_type_name"`
+	TransactionCashAmount      int                 `bson:"transaction_cash_amount" json:"transaction_cash_amount"`
+	TransactionCashChange      int                 `bson:"transaction_cash_change" json:"transaction_cash_change"`
 	CustomerAttribute          primitive.M         `bson:"customer_attribute" json:"customer_attribute"`
 	Connote                    Connote             `bson:"connote" json:"connote"`
 	ConnoteID                  primitive.ObjectID  `bson:"connote_id" json:"connote_id"`

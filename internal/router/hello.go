@@ -31,6 +31,7 @@ func (rtr *router) transactionRouter() http.Handler {
 	trxrouter.Post("/", trxHandler.Insert)
 	trxrouter.Get("/", trxHandler.Get)
 	trxrouter.Get("/{id}", trxHandler.GetOne)
+	trxrouter.Put("/{id}", trxHandler.Update)
 	trxrouter.Delete("/{id}", trxHandler.Delete)
 
 	return trxrouter

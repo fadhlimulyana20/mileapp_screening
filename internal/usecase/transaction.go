@@ -12,6 +12,7 @@ import (
 	"github.com/mileapp_screening/internal/params"
 	"github.com/mileapp_screening/internal/repository"
 	"github.com/sirupsen/logrus"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -25,6 +26,7 @@ type TransactionUsecase interface {
 	GetOne(ID string) appctx.Response
 	Get() appctx.Response
 	Delete(ID string) appctx.Response
+	Update(param params.TransactionUpdateParam) appctx.Response
 }
 
 func NewTransactionUsecase(mongo database.MongoDB) TransactionUsecase {
@@ -89,4 +91,42 @@ func (t *transactionUc) Delete(ID string) appctx.Response {
 	}
 
 	return *appctx.NewResponse().WithMessage("Package has been deleted")
+}
+
+func (t *transactionUc) Update(param params.TransactionUpdateParam) appctx.Response {
+	logrus.Info(fmt.Sprintf("[%s][Insert] is executed", t.name))
+
+	var trx entities.Transaction
+	trx, err := t.trxRepo.GetOne(param.TransactionID)
+	if err != nil {
+		logrus.Error(fmt.Sprintf("[%s][Insert] %s", t.name, err.Error()))
+		return *appctx.NewResponse().WithErrors(err.Error())
+	}
+	copier.Copy(&trx, &param)
+
+	connoteID, err := primitive.ObjectIDFromHex(param.ConnoteID)
+	if err != nil {
+		logrus.Error(fmt.Sprintf("[%s][Insert] %s", t.name, err.Error()))
+		return *appctx.NewResponse().WithErrors(err.Error())
+	}
+	trx.ConnoteID = connoteID
+	trx.Connote.ConnoteID = connoteID
+
+	for i, _ := range trx.KoliData {
+		koliID, err := primitive.ObjectIDFromHex(param.KoliData[i].KoliID)
+		if err != nil {
+			logrus.Error(fmt.Sprintf("[%s][Insert] %s", t.name, err.Error()))
+			return *appctx.NewResponse().WithErrors(err.Error())
+		}
+		trx.KoliData[i].ConnoteID = connoteID
+		trx.KoliData[i].KoliID = koliID
+	}
+
+	trx, err = t.trxRepo.Update(trx)
+	if err != nil {
+		logrus.Error(fmt.Sprintf("[%s][Insert] %s", t.name, err.Error()))
+		return *appctx.NewResponse().WithErrors(err.Error())
+	}
+
+	return *appctx.NewResponse().WithData(trx)
 }

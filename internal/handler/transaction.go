@@ -27,6 +27,7 @@ type TransactionHandler interface {
 	GetOne(w http.ResponseWriter, r *http.Request)
 	Get(w http.ResponseWriter, r *http.Request)
 	Delete(w http.ResponseWriter, r *http.Request)
+	Update(w http.ResponseWriter, r *http.Request)
 }
 
 func NewTransactionHandler(mongo database.MongoDB) TransactionHandler {
@@ -88,5 +89,35 @@ func (t *transactionHandler) Delete(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 
 	resp := t.trxUsecase.Delete(id)
+	t.handler.Response(w, resp, startTime, time.Now())
+}
+
+func (t *transactionHandler) Update(w http.ResponseWriter, r *http.Request) {
+	logrus.Info(fmt.Sprintf("[%s][Update] is executed", t.name))
+	startTime := time.Now()
+
+	var param params.TransactionUpdateParam
+	id := chi.URLParam(r, "id")
+	param.TransactionID = id
+
+	ctx := appctx.NewResponse()
+
+	if err := json.Decode(r.Body, &param); err != nil {
+		logrus.Error("Cannot decode json")
+		ctx = ctx.WithErrors(err.Error()).WithCode(http.StatusBadRequest)
+		t.handler.Response(w, *ctx, startTime, time.Now())
+		return
+	}
+
+	logrus.Debug(param)
+
+	if err := validator.Validate(param); err != nil {
+		logrus.Error(err.Error())
+		ctx = ctx.WithErrors(err.Error())
+		t.handler.Response(w, *ctx, startTime, time.Now())
+		return
+	}
+
+	resp := t.trxUsecase.Update(param)
 	t.handler.Response(w, resp, startTime, time.Now())
 }

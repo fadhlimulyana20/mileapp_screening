@@ -22,6 +22,7 @@ type TransactionRepository interface {
 	GetOne(ID string) (entities.Transaction, error)
 	Get() ([]entities.Transaction, int, error)
 	Delete(ID string) (entities.Transaction, error)
+	Update(tx entities.Transaction) (entities.Transaction, error)
 }
 
 func NewTransactionRepository(mongo database.MongoDB) TransactionRepository {
@@ -163,6 +164,31 @@ func (t *transactionRepo) Delete(ID string) (entities.Transaction, error) {
 		return tx, err
 	}
 	defer t.mongo.Close(ctx, client)
+
+	return tx, nil
+}
+
+func (t *transactionRepo) Update(tx entities.Transaction) (entities.Transaction, error) {
+	logrus.Info(fmt.Sprintf("[%s][Update] is executed", t.name))
+	tx.UpdatedAt = time.Now()
+
+	db, client, err := t.mongo.Database()
+	if err != nil {
+		logrus.Error(fmt.Sprintf("[%s][Update] %s", t.name, err.Error()))
+		return tx, err
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	selector := bson.M{"_id": tx.TransactionID}
+	update := bson.M{"$set": tx}
+	_, err = db.Collection("transaction").UpdateOne(ctx, selector, update)
+	defer t.mongo.Close(ctx, client)
+	if err != nil {
+		logrus.Error(fmt.Sprintf("[%s][Update] %s", t.name, err.Error()))
+		return tx, err
+	}
 
 	return tx, nil
 }
