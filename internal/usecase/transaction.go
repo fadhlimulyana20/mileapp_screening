@@ -1,7 +1,9 @@
 package usecase
 
 import (
+	"errors"
 	"fmt"
+	"net/http"
 
 	"github.com/jinzhu/copier"
 	"github.com/mileapp_screening/database"
@@ -10,6 +12,7 @@ import (
 	"github.com/mileapp_screening/internal/params"
 	"github.com/mileapp_screening/internal/repository"
 	"github.com/sirupsen/logrus"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type transactionUc struct {
@@ -52,6 +55,9 @@ func (t *transactionUc) GetOne(ID string) appctx.Response {
 	trx, err := t.trxRepo.GetOne(ID)
 	if err != nil {
 		logrus.Error(fmt.Sprintf("[%s][Get One] %s", t.name, err.Error()))
+		if errors.Is(err, mongo.ErrNoDocuments) {
+			return *appctx.NewResponse().WithCode(http.StatusNotFound).WithMessage("data not found")
+		}
 		return *appctx.NewResponse().WithErrors(err.Error())
 	}
 
@@ -76,6 +82,9 @@ func (t *transactionUc) Delete(ID string) appctx.Response {
 	_, err := t.trxRepo.Delete(ID)
 	if err != nil {
 		logrus.Error(fmt.Sprintf("[%s][Delete] %s", t.name, err.Error()))
+		if errors.Is(err, mongo.ErrNoDocuments) {
+			return *appctx.NewResponse().WithCode(http.StatusNotFound).WithMessage("data not found")
+		}
 		return *appctx.NewResponse().WithErrors(err.Error())
 	}
 
