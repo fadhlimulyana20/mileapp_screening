@@ -9,10 +9,11 @@ import (
 )
 
 type Config struct {
-	ENV    string
-	DB     *gorm.DB
-	SMTP   *mail.Mailer
-	Secret string
-	Minio  minio.MinioStorageContract
-	Mongo  database.MongoDB
+	ENV      string
+	DB       *gorm.DB
+	SMTP     *mail.Mailer
+	Secret   string
+	Minio    minio.MinioStorageContract
+	Mongo    database.MongoDB
+	HTTPPort int
 }

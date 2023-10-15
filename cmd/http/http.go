@@ -2,6 +2,7 @@ package http
 
 import (
 	"context"
+
 	"github.com/mileapp_screening/config"
 	"github.com/mileapp_screening/database"
 	h "github.com/mileapp_screening/internal/server/http"
@@ -26,7 +27,7 @@ func StartServer(ctx context.Context, port int) {
 	mongoConfig := config.NewMongoConfig().Load()
 	mongo := database.NewMongoDB(mongoConfig.Host, mongoConfig.Port, mongoConfig.User, mongoConfig.Password, mongoConfig.Database)
 
-	ht := h.NewServer(config.Env(), db, *smtp, secretKey.Key, minio, mongo)
+	ht := h.NewServer(config.Env(), db, *smtp, secretKey.Key, minio, mongo, port)
 	defer ht.Done()
 	ht.Run(ctx, port)
 

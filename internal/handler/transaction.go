@@ -38,6 +38,18 @@ func NewTransactionHandler(mongo database.MongoDB) TransactionHandler {
 	}
 }
 
+// Create Package godoc
+// @Summary      Create Package
+// @Description  Create Package
+// @Tags         Package
+// @Accept       json
+// @Produce      json
+// @Param        transaction   body  params.TransactionCreateParam  true  "Create Package"
+// @Success      200  {object}  interface{}
+// @Failure      400  {object}  interface{}
+// @Failure      404  {object}  interface{}
+// @Failure      500  {object}  interface{}
+// @Router       /package/ [post]
 func (t *transactionHandler) Insert(w http.ResponseWriter, r *http.Request) {
 	logrus.Info(fmt.Sprintf("[%s][Insert] is executed", t.name))
 	startTime := time.Now()
@@ -65,6 +77,18 @@ func (t *transactionHandler) Insert(w http.ResponseWriter, r *http.Request) {
 	t.handler.Response(w, resp, startTime, time.Now())
 }
 
+// Get Package godoc
+// @Summary      Get Package
+// @Description  Get Package
+// @Tags         Package
+// @Accept       json
+// @Produce      json
+// @Param        id   path string  true  "Package id"
+// @Success      200  {object}  interface{}
+// @Failure      400  {object}  interface{}
+// @Failure      404  {object}  interface{}
+// @Failure      500  {object}  interface{}
+// @Router       /package/{id} [get]
 func (t *transactionHandler) GetOne(w http.ResponseWriter, r *http.Request) {
 	logrus.Info(fmt.Sprintf("[%s][Get One] is executed", t.name))
 	startTime := time.Now()
@@ -75,6 +99,17 @@ func (t *transactionHandler) GetOne(w http.ResponseWriter, r *http.Request) {
 	t.handler.Response(w, resp, startTime, time.Now())
 }
 
+// Get List Package godoc
+// @Summary      Get List Package
+// @Description  Get List Package
+// @Tags         Package
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  interface{}
+// @Failure      400  {object}  interface{}
+// @Failure      404  {object}  interface{}
+// @Failure      500  {object}  interface{}
+// @Router       /package/ [get]
 func (t *transactionHandler) Get(w http.ResponseWriter, r *http.Request) {
 	logrus.Info(fmt.Sprintf("[%s][Get] is executed", t.name))
 	startTime := time.Now()
@@ -83,6 +118,18 @@ func (t *transactionHandler) Get(w http.ResponseWriter, r *http.Request) {
 	t.handler.Response(w, resp, startTime, time.Now())
 }
 
+// Delete Package godoc
+// @Summary      Delete Package
+// @Description  Delete Package
+// @Tags         Package
+// @Accept       json
+// @Produce      json
+// @Param        id   path string  true  "Package id"
+// @Success      200  {object}  interface{}
+// @Failure      400  {object}  interface{}
+// @Failure      404  {object}  interface{}
+// @Failure      500  {object}  interface{}
+// @Router       /package/{id} [delete]
 func (t *transactionHandler) Delete(w http.ResponseWriter, r *http.Request) {
 	logrus.Info(fmt.Sprintf("[%s][Delete] is executed", t.name))
 	startTime := time.Now()
@@ -93,6 +140,19 @@ func (t *transactionHandler) Delete(w http.ResponseWriter, r *http.Request) {
 	t.handler.Response(w, resp, startTime, time.Now())
 }
 
+// Update Package godoc
+// @Summary      Update Package
+// @Description  Update Package
+// @Tags         Package
+// @Accept       json
+// @Produce      json
+// @Param 		 id path string true "Package ID"
+// @Param        transaction   body  params.TransactionUpdateParam  true  "Update Package"
+// @Success      200  {object}  interface{}
+// @Failure      400  {object}  interface{}
+// @Failure      404  {object}  interface{}
+// @Failure      500  {object}  interface{}
+// @Router       /package/{id} [put]
 func (t *transactionHandler) Update(w http.ResponseWriter, r *http.Request) {
 	logrus.Info(fmt.Sprintf("[%s][Update] is executed", t.name))
 	startTime := time.Now()
@@ -123,6 +183,19 @@ func (t *transactionHandler) Update(w http.ResponseWriter, r *http.Request) {
 	t.handler.Response(w, resp, startTime, time.Now())
 }
 
+// Patch Package godoc
+// @Summary      Patch Package
+// @Description  Patch Package
+// @Tags         Package
+// @Accept       json
+// @Produce      json
+// @Param 		 id path string true "Package ID"
+// @Param        transaction   body  params.TransactionPatchParam  true  "Patch Package"
+// @Success      200  {object}  interface{}
+// @Failure      400  {object}  interface{}
+// @Failure      404  {object}  interface{}
+// @Failure      500  {object}  interface{}
+// @Router       /package/{id} [patch]
 func (t *transactionHandler) Patch(w http.ResponseWriter, r *http.Request) {
 	logrus.Info(fmt.Sprintf("[%s][Patch] is executed", t.name))
 	startTime := time.Now()

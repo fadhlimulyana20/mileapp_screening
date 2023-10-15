@@ -1,0 +1,623 @@
+basePath: /
+definitions:
+  params.ConnoteCreateParam:
+    properties:
+      actual_weight:
+        type: integer
+      chargeable_weight:
+        type: integer
+      connote_amount:
+        type: integer
+      connote_booking_code:
+        type: string
+      connote_count:
+        type: string
+      connote_number:
+        type: integer
+      connote_order:
+        type: integer
+      connote_service:
+        type: string
+      connote_service_price:
+        type: integer
+      connote_sla_day:
+        type: string
+      connote_state:
+        type: string
+      connote_state_id:
+        type: integer
+      connote_surcharge_amount:
+        type: string
+      connote_total_package:
+        type: string
+      history:
+        items: {}
+        type: array
+      id_source_tarif:
+        type: string
+      location_id:
+        type: string
+      location_name:
+        type: string
+      location_type:
+        type: string
+      organization_id:
+        type: integer
+      pod:
+        type: string
+      source_tarif_db:
+        type: string
+      surcharge_amount:
+        type: integer
+      transaction_id:
+        type: string
+      volume_weight:
+        type: integer
+      zone_code_from:
+        type: string
+      zone_code_to:
+        type: string
+    type: object
+  params.ConnoteUpdateParam:
+    properties:
+      actual_weight:
+        type: integer
+      chargeable_weight:
+        type: integer
+      connote_amount:
+        type: integer
+      connote_booking_code:
+        type: string
+      connote_count:
+        type: string
+      connote_id:
+        type: string
+      connote_number:
+        type: integer
+      connote_order:
+        type: integer
+      connote_service:
+        type: string
+      connote_service_price:
+        type: integer
+      connote_sla_day:
+        type: string
+      connote_state:
+        type: string
+      connote_state_id:
+        type: integer
+      connote_surcharge_amount:
+        type: string
+      connote_total_package:
+        type: string
+      history:
+        items: {}
+        type: array
+      id_source_tarif:
+        type: string
+      location_id:
+        type: string
+      location_name:
+        type: string
+      location_type:
+        type: string
+      organization_id:
+        type: integer
+      pod:
+        type: string
+      source_tarif_db:
+        type: string
+      surcharge_amount:
+        type: integer
+      transaction_id:
+        type: string
+      volume_weight:
+        type: integer
+      zone_code_from:
+        type: string
+      zone_code_to:
+        type: string
+    type: object
+  params.KoliDataCreateParam:
+    properties:
+      awb_url:
+        type: string
+      connote_id:
+        type: string
+      koli_chargeable_weight:
+        type: integer
+      koli_code:
+        type: string
+      koli_custom_field:
+        additionalProperties: true
+        type: object
+      koli_description:
+        type: string
+      koli_formula_id:
+        type: integer
+      koli_height:
+        type: integer
+      koli_length:
+        type: integer
+      koli_surcharge:
+        items: {}
+        type: array
+      koli_volume:
+        type: integer
+      koli_weight:
+        type: integer
+      koli_width:
+        type: integer
+    type: object
+  params.KoliDataUpdateParam:
+    properties:
+      awb_url:
+        type: string
+      connote_id:
+        type: string
+      koli_chargeable_weight:
+        type: integer
+      koli_code:
+        type: string
+      koli_custom_field:
+        additionalProperties: true
+        type: object
+      koli_description:
+        type: string
+      koli_formula_id:
+        type: integer
+      koli_height:
+        type: integer
+      koli_id:
+        type: string
+      koli_length:
+        type: integer
+      koli_surcharge:
+        items: {}
+        type: array
+      koli_volume:
+        type: integer
+      koli_weight:
+        type: integer
+      koli_width:
+        type: integer
+    type: object
+  params.TransactionCreateParam:
+    properties:
+      connote:
+        $ref: '#/definitions/params.ConnoteCreateParam'
+      connote_id:
+        type: string
+      current_location:
+        $ref: '#/definitions/params.TransactionCurrentLocationCreateParam'
+      custom_field:
+        additionalProperties: true
+        type: object
+      customer_attribute:
+        additionalProperties: true
+        type: object
+      customer_code:
+        type: string
+      customer_name:
+        type: string
+      destination_data:
+        $ref: '#/definitions/params.TransactionCustomerCreateParam'
+      koli_data:
+        items:
+          $ref: '#/definitions/params.KoliDataCreateParam'
+        type: array
+      location_id:
+        type: string
+      organization_id:
+        type: integer
+      origin_data:
+        $ref: '#/definitions/params.TransactionCustomerCreateParam'
+      transaction_additional_field:
+        additionalProperties: true
+        type: object
+      transaction_amount:
+        type: string
+      transaction_cash_amount:
+        type: integer
+      transaction_cash_change:
+        type: integer
+      transaction_discount:
+        type: string
+      transaction_payment_type:
+        type: string
+      transaction_payment_type_name:
+        type: string
+      transaction_state:
+        type: string
+    required:
+    - current_location
+    - customer_code
+    - customer_name
+    - location_id
+    - organization_id
+    - transaction_amount
+    - transaction_cash_amount
+    - transaction_cash_change
+    - transaction_discount
+    - transaction_payment_type
+    - transaction_payment_type_name
+    - transaction_state
+    type: object
+  params.TransactionCurrentLocationCreateParam:
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+      type:
+        type: string
+    required:
+    - code
+    - name
+    - type
+    type: object
+  params.TransactionCurrentLocationPatchParam:
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+      type:
+        type: string
+    type: object
+  params.TransactionCustomerCreateParam:
+    properties:
+      customer_address:
+        type: string
+      customer_address_detail:
+        type: string
+      customer_email:
+        type: string
+      customer_name:
+        type: string
+      customer_phone:
+        type: string
+      customer_zip_code:
+        type: string
+      location_id:
+        type: string
+      organization_id:
+        type: integer
+      zone_code:
+        type: string
+    type: object
+  params.TransactionPatchParam:
+    properties:
+      connote:
+        $ref: '#/definitions/params.ConnoteUpdateParam'
+      connote_id:
+        type: string
+      current_location:
+        $ref: '#/definitions/params.TransactionCurrentLocationPatchParam'
+      custom_field:
+        additionalProperties: true
+        type: object
+      customer_attribute:
+        additionalProperties: true
+        type: object
+      customer_code:
+        type: string
+      customer_name:
+        type: string
+      destination_data:
+        $ref: '#/definitions/params.TransactionCustomerCreateParam'
+      koli_data:
+        items:
+          $ref: '#/definitions/params.KoliDataUpdateParam'
+        type: array
+      location_id:
+        type: string
+      organization_id:
+        type: integer
+      origin_data:
+        $ref: '#/definitions/params.TransactionCustomerCreateParam'
+      transaction_additional_field:
+        additionalProperties: true
+        type: object
+      transaction_amount:
+        type: string
+      transaction_cash_amount:
+        type: integer
+      transaction_cash_change:
+        type: integer
+      transaction_discount:
+        type: string
+      transaction_id:
+        type: string
+      transaction_payment_type:
+        type: string
+      transaction_payment_type_name:
+        type: string
+      transaction_state:
+        type: string
+    type: object
+  params.TransactionUpdateParam:
+    properties:
+      connote:
+        $ref: '#/definitions/params.ConnoteUpdateParam'
+      connote_id:
+        type: string
+      current_location:
+        $ref: '#/definitions/params.TransactionCurrentLocationCreateParam'
+      custom_field:
+        additionalProperties: true
+        type: object
+      customer_attribute:
+        additionalProperties: true
+        type: object
+      customer_code:
+        type: string
+      customer_name:
+        type: string
+      destination_data:
+        $ref: '#/definitions/params.TransactionCustomerCreateParam'
+      koli_data:
+        items:
+          $ref: '#/definitions/params.KoliDataUpdateParam'
+        type: array
+      location_id:
+        type: string
+      organization_id:
+        type: integer
+      origin_data:
+        $ref: '#/definitions/params.TransactionCustomerCreateParam'
+      transaction_additional_field:
+        additionalProperties: true
+        type: object
+      transaction_amount:
+        type: string
+      transaction_cash_amount:
+        type: integer
+      transaction_cash_change:
+        type: integer
+      transaction_discount:
+        type: string
+      transaction_id:
+        type: string
+      transaction_payment_type:
+        type: string
+      transaction_payment_type_name:
+        type: string
+      transaction_state:
+        type: string
+    required:
+    - current_location
+    - customer_code
+    - customer_name
+    - location_id
+    - organization_id
+    - transaction_amount
+    - transaction_cash_amount
+    - transaction_cash_change
+    - transaction_discount
+    - transaction_payment_type
+    - transaction_payment_type_name
+    - transaction_state
+    type: object
+externalDocs:
+  description: OpenAPI
+  url: https://swagger.io/resources/open-api/
+host: localhost:5000
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a sample server celler server.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: MileApp Screening Test
+  version: "1.0"
+paths:
+  /package/:
+    get:
+      consumes:
+      - application/json
+      description: Get List Package
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
+      summary: Get List Package
+      tags:
+      - Package
+    post:
+      consumes:
+      - application/json
+      description: Create Package
+      parameters:
+      - description: Create Package
+        in: body
+        name: transaction
+        required: true
+        schema:
+          $ref: '#/definitions/params.TransactionCreateParam'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
+      summary: Create Package
+      tags:
+      - Package
+  /package/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete Package
+      parameters:
+      - description: Package id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
+      summary: Delete Package
+      tags:
+      - Package
+    get:
+      consumes:
+      - application/json
+      description: Get Package
+      parameters:
+      - description: Package id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
+      summary: Get Package
+      tags:
+      - Package
+    patch:
+      consumes:
+      - application/json
+      description: Patch Package
+      parameters:
+      - description: Package ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Patch Package
+        in: body
+        name: transaction
+        required: true
+        schema:
+          $ref: '#/definitions/params.TransactionPatchParam'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
+      summary: Patch Package
+      tags:
+      - Package
+    put:
+      consumes:
+      - application/json
+      description: Update Package
+      parameters:
+      - description: Package ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Update Package
+        in: body
+        name: transaction
+        required: true
+        schema:
+          $ref: '#/definitions/params.TransactionUpdateParam'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
+      summary: Update Package
+      tags:
+      - Package
+securityDefinitions:
+  BasicAuth:
+    type: basic
+swagger: "2.0"

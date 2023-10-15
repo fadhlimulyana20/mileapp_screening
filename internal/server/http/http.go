@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+
 	"github.com/mileapp_screening/database"
 	"github.com/mileapp_screening/internal/config"
 	"github.com/mileapp_screening/internal/router"
@@ -20,15 +21,16 @@ type httpServer struct {
 	router http.Handler
 }
 
-func NewServer(env string, db *gorm.DB, smtp mailer.Mailer, secretKey string, minio minio.MinioStorageContract, mongo database.MongoDB) Server {
+func NewServer(env string, db *gorm.DB, smtp mailer.Mailer, secretKey string, minio minio.MinioStorageContract, mongo database.MongoDB, HTTPPort int) Server {
 	// Init Config
 	cfg := &config.Config{
-		ENV:    env,
-		DB:     db,
-		SMTP:   &smtp,
-		Secret: secretKey,
-		Minio:  minio,
-		Mongo:  mongo,
+		ENV:      env,
+		DB:       db,
+		SMTP:     &smtp,
+		Secret:   secretKey,
+		Minio:    minio,
+		Mongo:    mongo,
+		HTTPPort: HTTPPort,
 	}
 
 	// Create new router

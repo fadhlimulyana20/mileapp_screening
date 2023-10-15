@@ -2,16 +2,20 @@ package router
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/mileapp_screening/internal/appctx"
 	"github.com/mileapp_screening/internal/config"
+
 	m "github.com/mileapp_screening/internal/middleware"
 	mail "github.com/mileapp_screening/utils/mailer"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/sirupsen/logrus"
 	"gorm.io/gorm"
+
+	httpSwagger "github.com/swaggo/http-swagger"
 )
 
 type router struct {
@@ -39,6 +43,10 @@ func (rtr *router) Route() http.Handler {
 	rtr.router.Use(m.Recovery)
 	rtr.router.Use(m.Authorization(rtr.cfg.DB))
 	rtr.router.Use(m.Pagination)
+
+	rtr.router.Get("/swagger/*", httpSwagger.Handler(
+		httpSwagger.URL(fmt.Sprintf("http://localhost:%d/swagger/doc.json", rtr.cfg.HTTPPort)), //The url pointing to API definition
+	))
 
 	rtr.router.NotFound(func(w http.ResponseWriter, r *http.Request) {
 		logrus.Error("Error 404 page not found")
