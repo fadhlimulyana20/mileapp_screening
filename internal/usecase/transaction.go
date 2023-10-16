@@ -95,19 +95,22 @@ func (t *transactionUc) Delete(ID string) appctx.Response {
 }
 
 func (t *transactionUc) Update(param params.TransactionUpdateParam) appctx.Response {
-	logrus.Info(fmt.Sprintf("[%s][Insert] is executed", t.name))
+	logrus.Info(fmt.Sprintf("[%s][Update] is executed", t.name))
 
 	var trx entities.Transaction
 	trx, err := t.trxRepo.GetOne(param.TransactionID)
 	if err != nil {
-		logrus.Error(fmt.Sprintf("[%s][Insert] %s", t.name, err.Error()))
+		logrus.Error(fmt.Sprintf("[%s][Update] %s", t.name, err.Error()))
+		if errors.Is(err, mongo.ErrNoDocuments) {
+			return *appctx.NewResponse().WithCode(http.StatusNotFound).WithMessage("data not found")
+		}
 		return *appctx.NewResponse().WithErrors(err.Error())
 	}
 	copier.Copy(&trx, &param)
 
 	connoteID, err := primitive.ObjectIDFromHex(param.ConnoteID)
 	if err != nil {
-		logrus.Error(fmt.Sprintf("[%s][Insert] %s", t.name, err.Error()))
+		logrus.Error(fmt.Sprintf("[%s][Update] %s", t.name, err.Error()))
 		return *appctx.NewResponse().WithErrors(err.Error())
 	}
 	trx.ConnoteID = connoteID
@@ -116,7 +119,7 @@ func (t *transactionUc) Update(param params.TransactionUpdateParam) appctx.Respo
 	for i, _ := range trx.KoliData {
 		koliID, err := primitive.ObjectIDFromHex(param.KoliData[i].KoliID)
 		if err != nil {
-			logrus.Error(fmt.Sprintf("[%s][Insert] %s", t.name, err.Error()))
+			logrus.Error(fmt.Sprintf("[%s][Update] %s", t.name, err.Error()))
 			return *appctx.NewResponse().WithErrors(err.Error())
 		}
 		trx.KoliData[i].ConnoteID = connoteID
@@ -125,7 +128,7 @@ func (t *transactionUc) Update(param params.TransactionUpdateParam) appctx.Respo
 
 	trx, err = t.trxRepo.Update(trx)
 	if err != nil {
-		logrus.Error(fmt.Sprintf("[%s][Insert] %s", t.name, err.Error()))
+		logrus.Error(fmt.Sprintf("[%s][Update] %s", t.name, err.Error()))
 		return *appctx.NewResponse().WithErrors(err.Error())
 	}
 
@@ -139,6 +142,9 @@ func (t *transactionUc) Patch(param params.TransactionPatchParam) appctx.Respons
 	trx, err := t.trxRepo.GetOne(param.TransactionID)
 	if err != nil {
 		logrus.Error(fmt.Sprintf("[%s][Patch] %s", t.name, err.Error()))
+		if errors.Is(err, mongo.ErrNoDocuments) {
+			return *appctx.NewResponse().WithCode(http.StatusNotFound).WithMessage("data not found")
+		}
 		return *appctx.NewResponse().WithErrors(err.Error())
 	}
 	copier.CopyWithOption(&trx, &param, copier.Option{IgnoreEmpty: true})

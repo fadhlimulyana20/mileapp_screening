@@ -172,6 +172,12 @@ func (t *transactionRepo) Update(tx entities.Transaction) (entities.Transaction,
 	logrus.Info(fmt.Sprintf("[%s][Update] is executed", t.name))
 	tx.UpdatedAt = time.Now()
 
+	for i, _ := range tx.KoliData {
+		if tx.KoliData[i].KoliID.IsZero() {
+			tx.KoliData[i].KoliID = primitive.NewObjectID()
+		}
+	}
+
 	db, client, err := t.mongo.Database()
 	if err != nil {
 		logrus.Error(fmt.Sprintf("[%s][Update] %s", t.name, err.Error()))
