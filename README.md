@@ -1,11 +1,20 @@
-# Go-Kit Boilerplate
-![Ghoper](https://go.dev/images/gophers/ladder.svg)
+# Mile App Screening Test
 
-## About this project
-This is a boilerplate for building microservice. It is written with Go with clean architecture. Currently, it only can be used to build REST API microservice.
+## How To Run
+```
+docker compose up
+```
+
+## How To Access Documentation
+Documentation can be accessed by open the http://localhost:5000/swagger link after running the REST API.
+
+## Created By Golang-Kit
+Golang Kit is a framework to build microservices  a boilerplate for building microservice. It is written with Go with clean architecture. Currently, it only can be used to build REST API microservice.
+
+Golang Kit can be accessed [here](https://github.com/fadhlimulyana20/golang_kit)
 
 ## Documentation
-The project documentation can be found in this [link](https://fadhlimulyana.notion.site/Golang-Go-Kit-3dd318e1eacd46fcbd99e20df8fa57e8)
+The Golang Kit documentation can be found in this [link](https://fadhlimulyana.notion.site/Golang-Go-Kit-3dd318e1eacd46fcbd99e20df8fa57e8)
 
 ## Feature
 - HTTP Server
