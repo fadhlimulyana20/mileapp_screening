@@ -170,8 +170,6 @@ func (t *transactionHandler) Update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	logrus.Debug(param)
-
 	if err := validator.Validate(param); err != nil {
 		logrus.Error(err.Error())
 		ctx = ctx.WithErrors(err.Error())
