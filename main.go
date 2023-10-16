@@ -1,10 +1,11 @@
 package main
 
 import (
+	"os"
 	_ "os"
 
 	"github.com/mileapp_screening/cmd"
-	_ "github.com/mileapp_screening/docs"
+	"github.com/mileapp_screening/docs"
 	_ "github.com/mileapp_screening/utils/env"
 	_ "github.com/mileapp_screening/utils/log"
 )
@@ -29,5 +30,9 @@ import (
 // @externalDocs.description  OpenAPI
 // @externalDocs.url          https://swagger.io/resources/open-api/
 func main() {
+	docs.SwaggerInfo.Host = os.Getenv("BASE_URL")
+	docs.SwaggerInfo.BasePath = "/"
+	docs.SwaggerInfo.Schemes = []string{"http", "https"}
+
 	cmd.Execute()
 }
