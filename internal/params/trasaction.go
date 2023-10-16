@@ -38,11 +38,11 @@ type TransactionCreateParam struct {
 	TransactionCashAmount      *int                                  `json:"transaction_cash_amount" validate:"required"`
 	TransactionCashChange      *int                                  `json:"transaction_cash_change" validate:"required"`
 	CustomerAttribute          map[string]interface{}                `json:"customer_attribute"`
-	Connote                    ConnoteCreateParam                    `json:"connote"`
-	ConnoteID                  string                                `json:"connote_id"`
-	OriginData                 TransactionCustomerCreateParam        `json:"origin_data"`
-	DestinationData            TransactionCustomerCreateParam        `json:"destination_data"`
-	KoliData                   []KoliDataCreateParam                 `json:"koli_data"`
+	Connote                    ConnoteCreateParam                    `json:"connote" validate:"required"`
+	ConnoteID                  string                                `json:"connote_id" validate:"required"`
+	OriginData                 TransactionCustomerCreateParam        `json:"origin_data" validate:"required"`
+	DestinationData            TransactionCustomerCreateParam        `json:"destination_data" validate:"required"`
+	KoliData                   []KoliDataCreateParam                 `json:"koli_data" validate:"required"`
 	CustomField                map[string]interface{}                `json:"custom_field"`
 	CurrentLocation            TransactionCurrentLocationCreateParam `json:"current_location" validate:"required"`
 }

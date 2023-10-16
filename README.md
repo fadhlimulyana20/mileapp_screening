@@ -17,7 +17,7 @@ go run main go serve ---port=5000
 - then open http://locahost:5000
 
 ## How To Access Documentation
-Documentation can be accessed by open the http://localhost:5000/swagger link after running the REST API.
+Documentation can be accessed by open the http://localhost:5000/swagger/ link after running the REST API.
 
 ## Unit Test
 Unit test are located in /internal/handler directory and /database directory.
